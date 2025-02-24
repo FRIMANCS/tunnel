@@ -201,13 +201,7 @@ replace_xui_db_from_github() {
     fi
 }
 reset_user() {
-    confirm "Are you sure to reset the username and password of the panel?" "n"
-    if [[ $? != 0 ]]; then
-        if [[ $# == 0 ]]; then
-            show_menu
-        fi
-        return 0
-    fi
+  
     read -rp "Please set the login username [default is a random username]: " config_account
     [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
     read -rp "Please set the login password [default is a random password]: " config_password
@@ -218,7 +212,7 @@ reset_user() {
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
     echo -e "${yellow} Panel login secret token disabled ${plain}"
     echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
-    confirm_restart
+    
 }
 a_reboot() {
     echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
