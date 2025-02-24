@@ -26,8 +26,6 @@ install_xui() {
     bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION <<EOF
 y
 EOF
-1999
-1999
 }
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
@@ -154,7 +152,7 @@ add_rc_local() {
 
 }
 
-reset_user() {
+reset_user1() {
   
     read -rp "Please set the login username [default is a random username]: " config_account
     [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
@@ -187,7 +185,7 @@ a_reboot() {
 install_xui
 replace_xui_db_from_github
 block_abuse_ips
-reset_user
+reset_user1
 add_rc_local
 optimize_network_system
 show_panel_info
