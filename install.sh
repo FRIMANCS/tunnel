@@ -23,9 +23,9 @@ fi
 
 install_xui() {
     VERSION=v2.4.0
-    bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION <<EOF
+    bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION 
 y
-EOF 
+
 }
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
