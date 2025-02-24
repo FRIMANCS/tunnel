@@ -23,9 +23,17 @@ fi
 
 install_xui() {
     VERSION=v2.4.0
-    bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION 
+    bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION <<EOF
 y
+EOF
 
+    if [[ $? -eq 0 ]]; then
+        LOGI "✅ نصب با موفقیت انجام شد!"
+        show_panel_info
+    else
+        LOGE "❌ خطا در نصب X-UI!"
+        exit 1
+    fi
 }
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
