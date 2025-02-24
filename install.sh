@@ -157,21 +157,17 @@ gen_random_string() {
     echo "$random_string"
 }
 reset_user1() {
-    # تولید نام کاربری و رمز عبور تصادفی اگر کاربر چیزی وارد نکرد
+  
     config_account=$(date +%s%N | md5sum | cut -c 1-8)  # نام کاربری تصادفی
     config_password=$(date +%s%N | md5sum | cut -c 9-16)  # رمز عبور تصادفی
-
-    # تولید پورت تصادفی در بازه 1024 تا 65535
+    config_webBasePath=$(date +%s%N | md5sum | cut -c 9-16)
+ 
     config_port=$((RANDOM % (65535 - 10000 + 1) + 10000))
-    config_webBasePath=$(gen_random_string 10)
-    # تنظیم نام کاربری، رمز عبور و پورت جدید در پنل
-    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} -port ${config_port} -webBasePath {config_webBasePath}>/dev/null 2>&1
+   
+  
+    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} -port ${config_port} -webBasePath ${config_webBasePath}>/dev/null 2>&1
 
-    # نمایش نام کاربری، رمز عبور و پورت جدید
-    echo -e "Panel login username has been reset to: ${green} ${config_account} ${plain}"
-    echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
-    echo -e "Panel port has been set to: ${green} ${config_port} ${plain}"
-    echo -e "Panel login webBasePath has been set to: ${green} ${config_webBasePath} ${plain}"
+   
 }
 
 show_panel_info() {
