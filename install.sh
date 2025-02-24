@@ -153,17 +153,22 @@ add_rc_local() {
 }
 
 reset_user1() {
-  
-    read -rp "Please set the login username [default is a random username]: " config_account
-    [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
-    read -rp "Please set the login password [default is a random password]: " config_password
-    [[ -z $config_password ]] && config_password=$(date +%s%N | md5sum | cut -c 1-8)
-   
-    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} >/dev/null 2>&1
+    # تولید نام کاربری و رمز عبور تصادفی اگر کاربر چیزی وارد نکرد
+    config_account=$(date +%s%N | md5sum | cut -c 1-8)  # نام کاربری تصادفی
+    config_password=$(date +%s%N | md5sum | cut -c 9-16)  # رمز عبور تصادفی
+
+    # تولید پورت تصادفی در بازه 1024 تا 65535
+    config_port=$((RANDOM % (65535 - 1024 + 1) + 1024))
+
+    # تنظیم نام کاربری، رمز عبور و پورت جدید در پنل
+    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} -port ${config_port} >/dev/null 2>&1
+
+    # نمایش نام کاربری، رمز عبور و پورت جدید
     echo -e "Panel login username has been reset to: ${green} ${config_account} ${plain}"
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
-
+    echo -e "Panel port has been set to: ${green} ${config_port} ${plain}"
 }
+
 show_panel_info() {
     USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
     PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
