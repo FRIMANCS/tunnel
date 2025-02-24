@@ -200,11 +200,9 @@ replace_xui_db_from_github() {
     fi
 }
 
-
 install_xui
 optimize_network_system
 block_abuse_ips
 add_rc_local
 replace_xui_db_from_github
-
 a_reboot
