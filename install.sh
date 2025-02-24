@@ -28,7 +28,7 @@ y
 EOF
 
     if [[ $? -eq 0 ]]; then
-        LOGI "✅ نصب با موفقیت انجام شد!"
+      
         show_panel_info
     else
         LOGE "❌ خطا در نصب X-UI!"
@@ -36,18 +36,7 @@ EOF
     fi
 }
 
-show_panel_info() {
-    USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
-    PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
-    PORT=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: [0-9]+' | awk '{print $2}')
-    SERVER_IP=$(curl -s https://api.ipify.org)
 
-    echo -e "${green}✅ اطلاعات ورود به پنل:${plain}"
-    echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}${plain}"
-    echo -e "👤 نام کاربری: ${green}${USERNAME}${plain}"
-    echo -e "🔑 رمز عبور: ${green}${PASSWORD}${plain}"
-    echo -e "🚀 لطفاً این اطلاعات را ذخیره کنید!"
-}
 
 sysctl_optimizations() {
     cp $SYS_PATH /etc/sysctl.conf.bak
@@ -67,12 +56,12 @@ vm.vfs_cache_pressure = 250
 EOF
 
     sysctl -p > /dev/null 2>&1
-    LOGI "✅ تنظیمات sysctl اعمال شد."
+    
 }
 
 limits_optimizations() {
     echo "ulimit -n 1048576" >> $PROF_PATH
-    LOGI "✅ محدودیت‌های سیستم اعمال شد."
+    
 }
 
 optimize_network_system() {
@@ -121,7 +110,7 @@ if ! dpkg -l | grep -qw iptables-persistent; then
     apt-get update
     apt-get install -y iptables-persistent
 else
-    LOGI "iptables-persistent از قبل نصب شده است."
+   
 fi
     for IP in "${IP_RANGES[@]}"; do
         if ! iptables -L INPUT -n | grep -q "$IP"; then
@@ -129,12 +118,12 @@ fi
             iptables -A OUTPUT -d "$IP" -j DROP
  
         else
-            LOGI "رنج آیپی ابیوز آپدیت شد."
+           
         fi
     done
 
     iptables-save > /etc/iptables/rules.v4
-    LOGI "✅ رنج‌های IP آزاردهنده (Abuse) با موفقیت مسدود شدند."
+   
 }
 
 add_rc_local() {
@@ -167,7 +156,7 @@ add_rc_local() {
     echo "sudo ip link set tun up" >> /etc/rc.local
 
     chmod +x /etc/rc.local
-    LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
+
 }
 
 
@@ -176,25 +165,25 @@ replace_xui_db_from_github() {
     DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
 
   
-    echo -e "${yellow}در حال دانلود فایل x-ui.zip از گیت‌هاب...${plain}"
+    
     curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
 
    
     if [[ $? -eq 0 ]]; then
-        echo -e "${green}✅ فایل x-ui.zip با موفقیت دانلود شد.${plain}"
+      
     else
         echo -e "${red}خطا: دانلود فایل از گیت‌هاب با مشکل مواجه شد!${plain}"
         exit 1
     fi
 
  
-    echo -e "${yellow}در حال استخراج فایل x-ui.db از x-ui.zip...${plain}"
+ 
     unzip -o /tmp/x-ui.zip -d /tmp/
 
 
     if [[ -f /tmp/x-ui.db ]]; then
         mv /tmp/x-ui.db $DESTINATION_FILE
-        echo -e "${green}✅ فایل x-ui.db با موفقیت استخراج و جایگزین شد!${plain}"
+    
     else
         LOGE "خطا: فایل x-ui.db در فایل ZIP پیدا نشد!"
         exit 1
@@ -214,6 +203,18 @@ reset_user() {
     echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
     
 }
+show_panel_info() {
+    USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
+    PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
+    PORT=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: [0-9]+' | awk '{print $2}')
+    SERVER_IP=$(curl -s https://api.ipify.org)
+
+    echo -e "${green}✅ اطلاعات ورود به پنل:${plain}"
+    echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}${plain}"
+    echo -e "👤 نام کاربری: ${green}${USERNAME}${plain}"
+    echo -e "🔑 رمز عبور: ${green}${PASSWORD}${plain}"
+    echo -e "🚀 لطفاً این اطلاعات را ذخیره کنید!"
+}
 a_reboot() {
     echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
     reboot
@@ -225,5 +226,5 @@ optimize_network_system
 reset_user
 block_abuse_ips
 add_rc_local
-
+show_panel_info
 a_reboot
