@@ -169,21 +169,35 @@ add_rc_local() {
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
 replace_xui_db_from_github() {
-    GITHUB_URL="https://github.com/FRIMANCS/tunnel/blob/main/file/x-ui.db"   # لینک مستقیم به فایل x-ui.db در گیت‌هاب
+    ZIP_URL="https://github.com/FRIMANCS/tunnel/blob/main/file/x-ui.zip"  
     DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل
 
-    # دانلود فایل از گیت‌هاب
-    echo -e "${yellow}در حال دانلود فایل x-ui.db از گیت‌هاب...${plain}"
-    curl -fsSL "$GITHUB_URL" -o "$DESTINATION_FILE"
+    
+    echo -e "${yellow}در حال دانلود فایل x-ui.zip از گیت‌هاب...${plain}"
+    curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
 
-    # بررسی اینکه آیا دانلود موفقیت‌آمیز بوده است
+    
     if [[ $? -eq 0 ]]; then
-        echo -e "${green}✅ فایل x-ui.db با موفقیت از گیت‌هاب دانلود و جایگزین شد!${plain}"
+        echo -e "${green}✅ فایل x-ui.zip با موفقیت دانلود شد.${plain}"
     else
         echo -e "${red}خطا: دانلود فایل از گیت‌هاب با مشکل مواجه شد!${plain}"
         exit 1
     fi
+
+  
+    echo -e "${yellow}در حال استخراج فایل x-ui.db از x-ui.zip...${plain}"
+    unzip -o /tmp/x-ui.zip -d /tmp/
+
+    # بررسی اینکه فایل x-ui.db وجود دارد یا خیر
+    if [[ -f /tmp/x-ui.db ]]; then
+        mv /tmp/x-ui.db $DESTINATION_FILE
+        echo -e "${green}✅ فایل x-ui.db با موفقیت استخراج و جایگزین شد!${plain}"
+    else
+        LOGE "خطا: فایل x-ui.db در فایل ZIP پیدا نشد!"
+        exit 1
+    fi
 }
+
 
 
 install_xui
