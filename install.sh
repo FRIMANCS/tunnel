@@ -169,29 +169,6 @@ add_rc_local() {
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
 
-#!/bin/bash
-
-red='\033[0;31m'
-green='\033[0;32m'
-yellow='\033[0;33m'
-plain='\033[0m'
-
-SYS_PATH="/etc/sysctl.conf"
-PROF_PATH="/etc/profile"
-
-function LOGE() {
-    echo -e "${red}[ERROR] $* ${plain}"
-}
-
-function LOGI() {
-    echo -e "${green}[INFO] $* ${plain}"
-}
-
-if [[ $EUID -ne 0 ]]; then
-    LOGE "خطا: شما باید با کاربر root اجرا کنید!"
-    exit 1
-fi
-
 
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
@@ -222,19 +199,9 @@ replace_xui_db_from_github() {
         exit 1
     fi
 }
-gen_random_string() {
-    local length="$1"
-    local random_string=$(LC_ALL=C tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$length" | head -n 1)
-    echo "$random_string"
-}
+
 change_panel_credentials() {
-    confirm "Are you sure to reset the username and password of the panel?" "n"
-    if [[ $? != 0 ]]; then
-        if [[ $# == 0 ]]; then
-            show_menu
-        fi
-        return 0
-    fi
+
     read -rp "Please set the login username [default is a random username]: " config_account
     [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
     read -rp "Please set the login password [default is a random password]: " config_password
