@@ -3,4 +3,4 @@
 برای اجرای اسکریپت، دستور زیر را در ترمینال وارد کنید:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/FRIMANCS/tunnel/master/s.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/FRIMANCS/tunnel/master/install.sh)
