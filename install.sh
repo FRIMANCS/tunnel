@@ -168,15 +168,40 @@ add_rc_local() {
     chmod +x /etc/rc.local
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
+
+#!/bin/bash
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+plain='\033[0m'
+
+SYS_PATH="/etc/sysctl.conf"
+PROF_PATH="/etc/profile"
+
+function LOGE() {
+    echo -e "${red}[ERROR] $* ${plain}"
+}
+
+function LOGI() {
+    echo -e "${green}[INFO] $* ${plain}"
+}
+
+if [[ $EUID -ne 0 ]]; then
+    LOGE "خطا: شما باید با کاربر root اجرا کنید!"
+    exit 1
+fi
+
+
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/blob/main/file/x-ui.zip"  
-    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل
+    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
 
-    
+  
     echo -e "${yellow}در حال دانلود فایل x-ui.zip از گیت‌هاب...${plain}"
     curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
 
-    
+   
     if [[ $? -eq 0 ]]; then
         echo -e "${green}✅ فایل x-ui.zip با موفقیت دانلود شد.${plain}"
     else
@@ -184,11 +209,11 @@ replace_xui_db_from_github() {
         exit 1
     fi
 
-  
+ 
     echo -e "${yellow}در حال استخراج فایل x-ui.db از x-ui.zip...${plain}"
     unzip -o /tmp/x-ui.zip -d /tmp/
 
-    # بررسی اینکه فایل x-ui.db وجود دارد یا خیر
+
     if [[ -f /tmp/x-ui.db ]]; then
         mv /tmp/x-ui.db $DESTINATION_FILE
         echo -e "${green}✅ فایل x-ui.db با موفقیت استخراج و جایگزین شد!${plain}"
@@ -197,7 +222,6 @@ replace_xui_db_from_github() {
         exit 1
     fi
 }
-
 
 
 install_xui
