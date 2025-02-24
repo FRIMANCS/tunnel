@@ -154,16 +154,6 @@ replace_xui_db_from_github() {
     
     curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
 
-   
-    if [[ $? -eq 0 ]]; then
-      
-    else
-        echo -e "${red}خطا: دانلود فایل از گیت‌هاب با مشکل مواجه شد!${plain}"
-        exit 1
-    fi
-
- 
- 
     unzip -o /tmp/x-ui.zip -d /tmp/
 
 
