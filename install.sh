@@ -220,8 +220,9 @@ a_reboot() {
 }
 install_xui
 replace_xui_db_from_github
-reset_user
+
 optimize_network_system
+reset_user
 block_abuse_ips
 add_rc_local
 
