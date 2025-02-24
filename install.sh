@@ -213,7 +213,7 @@ change_panel_credentials() {
     echo -e "${yellow} Panel login secret token disabled ${plain}"
     echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
     confirm_restart
-}
+
  
  
     echo -e "${yellow}🔄 در حال راه‌اندازی مجدد پنل X-UI...${plain}"
