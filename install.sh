@@ -22,7 +22,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 install_xui() {
-    VERSION=v2.4.0
+    VERSION=v2.4.1
     bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION <<EOF
 y
 EOF
