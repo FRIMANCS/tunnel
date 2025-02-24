@@ -25,14 +25,7 @@ install_xui() {
     VERSION=v2.4.0
     bash <(curl -fsSL "https://raw.githubusercontent.com/mhsanaei/3x-ui/$VERSION/install.sh") $VERSION <<EOF
 y
-EOF
-
-    if [[ $? -eq 0 ]]; then
-        show_panel_info
-    else
-        LOGE "❌ خطا در نصب X-UI!"
-        exit 1
-    fi
+EOF 
 }
 
 
@@ -214,9 +207,9 @@ a_reboot() {
 }
 install_xui
 replace_xui_db_from_github
-
 optimize_network_system
 reset_user
 block_abuse_ips
 add_rc_local
+show_panel_info
 a_reboot
