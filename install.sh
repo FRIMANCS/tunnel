@@ -174,10 +174,11 @@ show_panel_info() {
     USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
     PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
     PORT=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: [0-9]+' | awk '{print $2}')
+    PATH=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'webbasepath: [^ ]+' | awk '{print $2}')
     SERVER_IP=$(curl -s https://api.ipify.org)
 
     echo -e "${green}✅ اطلاعات ورود به پنل:${plain}"
-    echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}${plain}"
+    echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}/${PATH}${plain}"
     echo -e "👤 نام کاربری: ${green}${USERNAME}${plain}"
     echo -e "🔑 رمز عبور: ${green}${PASSWORD}${plain}"
     echo -e "🚀 لطفاً این اطلاعات را ذخیره کنید!"
