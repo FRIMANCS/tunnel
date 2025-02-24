@@ -222,27 +222,33 @@ replace_xui_db_from_github() {
         exit 1
     fi
 }
+gen_random_string() {
+    local length="$1"
+    local random_string=$(LC_ALL=C tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$length" | head -n 1)
+    echo "$random_string"
+}
 change_panel_credentials() {
-    DB_FILE="$DESTINATION_FILE"
-
-    read -rp "لطفاً نام کاربری جدید را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_account
-    [[ -z $config_account ]] && config_account=$(tr -dc 'a-z0-9' </dev/urandom | head -c 8)
-
-    read -rp "لطفاً رمز عبور جدید را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_password
-    [[ -z $config_password ]] && config_password=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 12)
-
-    read -rp "لطفاً پورت پنل را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_port
-    [[ -z $config_port ]] && config_port=$((RANDOM % (65535 - 1024) + 1024))
-
-    sqlite3 "$DB_FILE" <<EOF
-UPDATE user SET username='$config_account', password='$config_password';
-UPDATE setting SET panel_port='$config_port';
-EOF
-
-    LOGI "✅ نام کاربری جدید: ${config_account}"
-    LOGI "✅ رمز عبور جدید: ${config_password}"
-    LOGI "✅ پورت جدید پنل: ${config_port}"
-
+    confirm "Are you sure to reset the username and password of the panel?" "n"
+    if [[ $? != 0 ]]; then
+        if [[ $# == 0 ]]; then
+            show_menu
+        fi
+        return 0
+    fi
+    read -rp "Please set the login username [default is a random username]: " config_account
+    [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
+    read -rp "Please set the login password [default is a random password]: " config_password
+    [[ -z $config_password ]] && config_password=$(date +%s%N | md5sum | cut -c 1-8)
+    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} >/dev/null 2>&1
+    /usr/local/x-ui/x-ui setting -remove_secret >/dev/null 2>&1
+    echo -e "Panel login username has been reset to: ${green} ${config_account} ${plain}"
+    echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
+    echo -e "${yellow} Panel login secret token disabled ${plain}"
+    echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
+    confirm_restart
+}
+ 
+ 
     echo -e "${yellow}🔄 در حال راه‌اندازی مجدد پنل X-UI...${plain}"
     systemctl restart x-ui
 
