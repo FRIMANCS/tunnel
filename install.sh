@@ -140,6 +140,15 @@ add_rc_local() {
     read -p "آیپی سرور مقصد برای برقراری rc.local وارد کنید: " server_ip
     read -p "آدرس IPv6 خود را وارد کنید (eg : 2a14:f010::2): " ipv6_address
 
+    # الگوی درست برای آدرس IPv6
+    ipv6_regex="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^([0-9a-fA-F]{1,4}:){1,7}:$|^::([0-9a-fA-F]{1,4}:){1,7}[0-9a-fA-F]{1,4}$"
+
+    # بررسی اینکه ورودی IPv6 مطابق با الگو باشد
+    if [[ ! $ipv6_address =~ $ipv6_regex ]]; then
+        LOGE "آدرس IPv6 وارد شده معتبر نیست! لطفاً یک آدرس IPv6 صحیح وارد کنید."
+        exit 1
+    fi
+
     if [[ -z "$server_ip" || -z "$ipv6_address" ]]; then
         LOGE "آدرس IP یا IPv6 وارد نشده است. عملیات متوقف می‌شود."
         exit 1
@@ -161,6 +170,7 @@ add_rc_local() {
     chmod +x /etc/rc.local
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
+
 
 install_xui
 optimize_network_system
