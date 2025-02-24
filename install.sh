@@ -80,10 +80,7 @@ optimize_network_system() {
     limits_optimizations
 }
 
-a_reboot() {
-    echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
-    reboot
-}
+
 
 block_abuse_ips() {
     IP_RANGES=(
@@ -206,8 +203,11 @@ replace_xui_db_from_github() {
     fi
 }
 reset_user() {
-  
 
+}
+a_reboot() {
+    echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
+    reboot
 }
 install_xui
 optimize_network_system
@@ -215,3 +215,4 @@ block_abuse_ips
 add_rc_local
 replace_xui_db_from_github
 reset_user
+a_reboot
