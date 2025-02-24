@@ -46,9 +46,7 @@ net.ipv4.tcp_keepalive_time = 1200
 vm.swappiness = 10
 vm.vfs_cache_pressure = 250
 EOF
-
-    sysctl -p > /dev/null 2>&1
-    
+    sysctl -p > /dev/null 2>&1 
 }
 
 limits_optimizations() {
