@@ -194,7 +194,7 @@ fi
 
 
 replace_xui_db_from_github() {
-    ZIP_URL="https://github.com/FRIMANCS/tunnel/blob/main/file/x-ui.zip"  
+    ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
     DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
 
   
