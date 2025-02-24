@@ -117,12 +117,12 @@ block_abuse_ips() {
     )
 
     if ! command -v iptables &> /dev/null; then
-        LOGE "iptables نصب نشده است. نصب می‌شود."
+     
         apt-get update
         apt-get install -y iptables
     fi
 if ! dpkg -l | grep -qw iptables-persistent; then
-    LOGE "iptables-persistent نصب نشده است. در حال نصب..."
+  
     apt-get update
     apt-get install -y iptables-persistent
 else
@@ -206,9 +206,9 @@ replace_xui_db_from_github() {
     fi
 }
 reset_user() {
-    read -rp "Please set the login username [default is a random username]: " config_account
+    
     [[ -z $config_account ]] && config_account=$(date +%s%N | md5sum | cut -c 1-8)
-    read -rp "Please set the login password [default is a random password]: " config_password
+   
     [[ -z $config_password ]] && config_password=$(date +%s%N | md5sum | cut -c 1-8)
     /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} >/dev/null 2>&1
     /usr/local/x-ui/x-ui setting -remove_secret >/dev/null 2>&1
@@ -216,7 +216,7 @@ reset_user() {
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
     echo -e "${yellow} Panel login secret token disabled ${plain}"
     echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
-    confirm_restart
+   
 }
 install_xui
 optimize_network_system
