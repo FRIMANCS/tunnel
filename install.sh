@@ -114,12 +114,10 @@ block_abuse_ips() {
     )
 
     if ! command -v iptables &> /dev/null; then
-     
         apt-get update
         apt-get install -y iptables
     fi
 if ! dpkg -l | grep -qw iptables-persistent; then
-  
     apt-get update
     apt-get install -y iptables-persistent
 else
