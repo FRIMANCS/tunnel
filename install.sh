@@ -138,7 +138,7 @@ block_abuse_ips() {
 
 add_rc_local() {
     read -p "آیپی سرور مقصد برای برقراری rc.local وارد کنید: " server_ip
-    read -p "آدرس IPv6 خود را وارد کنید (eg : 2a14:f010::2): " ipv6_address
+   read -p "آدرس IPv6 لوکال خود را وارد کنید (eg : 2a14:f010::2): " ipv6_address
 
     ipv4_regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
 
