@@ -180,7 +180,7 @@ show_panel_info() {
     echo -e "${green}✅ اطلاعات ورود به پنل:${plain}"
     echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}${plain}"
     echo -e "👤 نام کاربری: ${green}${USERNAME}${plain}"
-    echo -e "پچ پنل: ${green}${PATH}${plain}"
+    echo -e "پچ پنل: ${green}${config_webBasePath}${plain}"
     echo -e "🔑 رمز عبور: ${green}${PASSWORD}${plain}"
     echo -e "🚀 لطفاً این اطلاعات را ذخیره کنید!"
 }
