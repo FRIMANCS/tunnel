@@ -171,6 +171,7 @@ reset_user1() {
     echo -e "Panel login username has been reset to: ${green} ${config_account} ${plain}"
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
     echo -e "Panel port has been set to: ${green} ${config_port} ${plain}"
+    echo -e "Panel login webBasePath has been set to: ${green} ${config_webBasePath} ${plain}"
 }
 
 show_panel_info() {
