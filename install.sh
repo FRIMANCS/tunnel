@@ -168,23 +168,19 @@ add_rc_local() {
     chmod +x /etc/rc.local
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
-replace_xui_db() {
-    SOURCE_FILE="./file/x-ui.db"      # مسیر فایل x-ui.db در پوشه file
-    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر هدف برای فایل
+replace_xui_db_from_github() {
+    GITHUB_URL="https://github.com/FRIMANCS/tunne/raw/main/file/x-ui.db"   # لینک مستقیم به فایل x-ui.db در گیت‌هاب
+    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل
 
-    # بررسی اینکه آیا فایل منبع وجود دارد یا نه
-    if [[ -f "$SOURCE_FILE" ]]; then
-        # اگر فایل هدف وجود دارد، آن را حذف می‌کنیم
-        if [[ -f "$DESTINATION_FILE" ]]; then
-            echo -e "${yellow}فایل مقصد قبلاً وجود داشته، در حال جایگزینی...${plain}"
-            rm -f "$DESTINATION_FILE"
-        fi
+    # دانلود فایل از گیت‌هاب
+    echo -e "${yellow}در حال دانلود فایل x-ui.db از گیت‌هاب...${plain}"
+    curl -fsSL "$GITHUB_URL" -o "$DESTINATION_FILE"
 
-        # کپی کردن فایل به محل مورد نظر
-        cp "$SOURCE_FILE" "$DESTINATION_FILE"
-        echo -e "${green}✅ فایل x-ui.db با موفقیت جایگزین شد!${plain}"
+    # بررسی اینکه آیا دانلود موفقیت‌آمیز بوده است
+    if [[ $? -eq 0 ]]; then
+        echo -e "${green}✅ فایل x-ui.db با موفقیت از گیت‌هاب دانلود و جایگزین شد!${plain}"
     else
-        echo -e "${red}خطا: فایل x-ui.db در مسیر ./file/ پیدا نشد!${plain}"
+        echo -e "${red}خطا: دانلود فایل از گیت‌هاب با مشکل مواجه شد!${plain}"
         exit 1
     fi
 }
@@ -194,5 +190,5 @@ install_xui
 optimize_network_system
 block_abuse_ips
 add_rc_local
-replace_xui_db
+replace_xui_db_from_github
 a_reboot
