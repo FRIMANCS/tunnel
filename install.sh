@@ -27,9 +27,18 @@ install_xui() {
 y
 EOF 
 }
-
-
-
+replace_xui_db_from_github() {
+    ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
+    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
+    curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
+    unzip -o /tmp/x-ui.zip -d /tmp/
+    if [[ -f /tmp/x-ui.db ]]; then
+        mv /tmp/x-ui.db $DESTINATION_FILE
+    else
+        LOGE "خطا: فایل x-ui.db در فایل ZIP پیدا نشد!"
+        exit 1
+    fi
+}
 sysctl_optimizations() {
     cp $SYS_PATH /etc/sysctl.conf.bak
     cat <<EOF >> $SYS_PATH
@@ -143,26 +152,6 @@ add_rc_local() {
 
 }
 
-
-replace_xui_db_from_github() {
-    ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
-    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
-
-  
-    
-    curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
-
-    unzip -o /tmp/x-ui.zip -d /tmp/
-
-
-    if [[ -f /tmp/x-ui.db ]]; then
-        mv /tmp/x-ui.db $DESTINATION_FILE
-    
-    else
-        LOGE "خطا: فایل x-ui.db در فایل ZIP پیدا نشد!"
-        exit 1
-    fi
-}
 reset_user() {
   
     read -rp "Please set the login username [default is a random username]: " config_account
@@ -195,8 +184,8 @@ a_reboot() {
 }
 install_xui
 replace_xui_db_from_github
-reset_user
 block_abuse_ips
+reset_user
 add_rc_local
 optimize_network_system
 show_panel_info
