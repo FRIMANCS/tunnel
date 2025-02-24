@@ -222,6 +222,32 @@ replace_xui_db_from_github() {
         exit 1
     fi
 }
+change_panel_credentials() {
+    DB_FILE="$DESTINATION_FILE"
+
+    read -rp "لطفاً نام کاربری جدید را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_account
+    [[ -z $config_account ]] && config_account=$(tr -dc 'a-z0-9' </dev/urandom | head -c 8)
+
+    read -rp "لطفاً رمز عبور جدید را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_password
+    [[ -z $config_password ]] && config_password=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 12)
+
+    read -rp "لطفاً پورت پنل را وارد کنید [پیش‌فرض: مقدار تصادفی]: " config_port
+    [[ -z $config_port ]] && config_port=$((RANDOM % (65535 - 1024) + 1024))
+
+    sqlite3 "$DB_FILE" <<EOF
+UPDATE user SET username='$config_account', password='$config_password';
+UPDATE setting SET panel_port='$config_port';
+EOF
+
+    LOGI "✅ نام کاربری جدید: ${config_account}"
+    LOGI "✅ رمز عبور جدید: ${config_password}"
+    LOGI "✅ پورت جدید پنل: ${config_port}"
+
+    echo -e "${yellow}🔄 در حال راه‌اندازی مجدد پنل X-UI...${plain}"
+    systemctl restart x-ui
+
+    LOGI "✅ پنل X-UI با موفقیت راه‌اندازی شد!"
+}
 
 
 install_xui
@@ -229,4 +255,6 @@ optimize_network_system
 block_abuse_ips
 add_rc_local
 replace_xui_db_from_github
+change_panel_credentials
+
 a_reboot
