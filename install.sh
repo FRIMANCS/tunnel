@@ -164,6 +164,8 @@ reset_user1() {
     echo -e "Panel login password has been reset to: ${green} ${config_password} ${plain}"
     echo -e "${yellow} Panel login secret token disabled ${plain}"
     echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
+    /usr/local/x-ui/x-ui setting -port ${port}
+      echo -e "The port is set, Please restart the panel now, and use the new port ${green}${port}${plain} to access web panel"
     
 }
 show_panel_info() {
