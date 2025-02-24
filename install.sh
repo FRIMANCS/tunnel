@@ -114,9 +114,6 @@ fi
         if ! iptables -L INPUT -n | grep -q "$IP"; then
             iptables -A INPUT -s "$IP" -j DROP
             iptables -A OUTPUT -d "$IP" -j DROP
- 
-        else
-           
         fi
     done
 
