@@ -169,7 +169,7 @@ add_rc_local() {
     LOGI "✅ فایل /etc/rc.local ساخته شد و مجوزهای لازم اعمال شد."
 }
 replace_xui_db_from_github() {
-    GITHUB_URL="https://github.com/FRIMANCS/tunne/raw/main/file/x-ui.db"   # لینک مستقیم به فایل x-ui.db در گیت‌هاب
+    GITHUB_URL="https://github.com/FRIMANCS/tunnel/blob/main/file/x-ui.db"   # لینک مستقیم به فایل x-ui.db در گیت‌هاب
     DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل
 
     # دانلود فایل از گیت‌هاب
