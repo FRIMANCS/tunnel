@@ -171,18 +171,22 @@ reset_user1() {
 }
 
 show_panel_info() {
+    clear  # پاک کردن صفحه ترمینال
+
     USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
     PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
     PORT=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: [0-9]+' | awk '{print $2}')
     SERVER_IP=$(curl -s https://api.ipify.org)
 
-    echo -e "${green}✅ اطلاعات ورود به پنل:${plain}"
-    echo -e "🌐 آدرس پنل: ${yellow}http://${SERVER_IP}:${PORT}/${config_webBasePath}/${plain}"
-    echo -e "👤 نام کاربری: ${green}${USERNAME}${plain}"
-    echo -e "پچ پنل: ${green}${config_webBasePath}${plain}"
-    echo -e "🔑 رمز عبور: ${green}${PASSWORD}${plain}"
-    echo -e "🚀 لطفاً این اطلاعات را ذخیره کنید!"
+    # نمایش اطلاعات ورود به پنل
+    echo -e "${green}✅ Panel login information:${plain}"
+    echo -e "🌐 Panel URL: ${yellow}http://${SERVER_IP}:${PORT}/${config_webBasePath}${plain}"
+    echo -e "👤 Username: ${green}${USERNAME}${plain}"
+    echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
+    echo -e "🔑 Password: ${green}${PASSWORD}${plain}"
+    echo -e "🚀 Please save this information!"
 }
+
 a_reboot() {
     echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
     reboot
