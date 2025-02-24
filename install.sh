@@ -28,7 +28,6 @@ y
 EOF
 
     if [[ $? -eq 0 ]]; then
-      
         show_panel_info
     else
         LOGE "❌ خطا در نصب X-UI!"
@@ -60,8 +59,7 @@ EOF
 }
 
 limits_optimizations() {
-    echo "ulimit -n 1048576" >> $PROF_PATH
-    
+    echo "ulimit -n 1048576" >> $PROF_PATH 
 }
 
 optimize_network_system() {
@@ -221,5 +219,4 @@ optimize_network_system
 reset_user
 block_abuse_ips
 add_rc_local
-show_panel_info
 a_reboot
