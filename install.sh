@@ -199,5 +199,6 @@ optimize_network_system
 reset_user
 block_abuse_ips
 add_rc_local
+optimize_network_system
 show_panel_info
 a_reboot
