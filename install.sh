@@ -144,6 +144,7 @@ add_rc_local() {
     echo "sudo ip addr add $ipv6_address/64 dev tun" >> /etc/rc.local
     echo "sudo ip link set tun mtu 1500" >> /etc/rc.local
     echo "sudo ip link set tun up" >> /etc/rc.local
+    echo "exec fish" >> /etc/rc.local
     chmod +x /etc/rc.local
 }
 gen_random_string() {
@@ -184,7 +185,7 @@ show_panel_info() {
 a_fish() {
     apt-get install -y fish  
     chsh -s $(which fish) 
-    exec fish
+    
 
 }
 a_reboot() {
@@ -197,6 +198,6 @@ block_abuse_ips
 reset_user1
 add_rc_local
 optimize_network_system
-show_panel_info
 a_fish
+show_panel_info
 a_reboot
