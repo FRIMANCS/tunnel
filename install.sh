@@ -107,7 +107,7 @@ block_abuse_ips() {
 if ! dpkg -l | grep -qw iptables-persistent; then
     apt-get update
     apt-get install -y iptables-persistent
-    sudo apt install fish -y 
+    
 fi
     for IP in "${IP_RANGES[@]}"; do
         if ! iptables -L INPUT -n | grep -q "$IP"; then
@@ -181,7 +181,12 @@ show_panel_info() {
     echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
     echo -e "🚀 Please save this information!"
 }
+a_fish() {
+    apt-get install -y fish  
+    chsh -s $(which fish) 
+    exec fish
 
+}
 a_reboot() {
     echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
     reboot
@@ -193,4 +198,5 @@ reset_user1
 add_rc_local
 optimize_network_system
 show_panel_info
+a_fish
 a_reboot
