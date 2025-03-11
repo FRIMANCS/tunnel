@@ -17,7 +17,7 @@ function LOGI() {
 }
 
 if [[ $EUID -ne 0 ]]; then
-    LOGE "Error: You must run as root!"
+    LOGE "خطا: شما باید با کاربر root اجرا کنید!"
     exit 1
 fi
 
@@ -27,20 +27,18 @@ install_xui() {
 y
 EOF
 }
-
 replace_xui_db_from_github() {
     ZIP_URL="https://github.com/FRIMANCS/tunnel/raw/main/file/x-ui.zip"  
-    DESTINATION_FILE="/etc/x-ui/x-ui.db"
+    DESTINATION_FILE="/etc/x-ui/x-ui.db"  # مسیر مقصد برای فایل x-ui.db
     curl -fsSL "$ZIP_URL" -o /tmp/x-ui.zip
     unzip -o /tmp/x-ui.zip -d /tmp/
     if [[ -f /tmp/x-ui.db ]]; then
         mv /tmp/x-ui.db $DESTINATION_FILE
     else
-        LOGE "Error: x-ui.db file not found in the ZIP archive!"
+        LOGE "خطا: فایل x-ui.db در فایل ZIP پیدا نشد!"
         exit 1
     fi
 }
-
 sysctl_optimizations() {
     cp $SYS_PATH /etc/sysctl.conf.bak
     cat <<EOF >> $SYS_PATH
@@ -68,6 +66,8 @@ optimize_network_system() {
     sysctl_optimizations
     limits_optimizations
 }
+
+
 
 block_abuse_ips() {
     IP_RANGES=(
@@ -116,6 +116,7 @@ fi
     done
 
     iptables-save > /etc/iptables/rules.v4
+   
 }
 
 add_rc_local() {
@@ -144,10 +145,51 @@ add_rc_local() {
     echo "sudo ip link set tun up" >> /etc/rc.local
     chmod +x /etc/rc.local
 }
+gen_random_string() {
+    local length="$1"
+    local random_string=$(LC_ALL=C tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$length" | head -n 1)
+    echo "$random_string"
+}
+reset_user1() {
+  
+    config_account=$(date +%s%N | md5sum | cut -c 1-8) 
+    config_password=$(date +%s%N | md5sum | cut -c 9-16) 
+    config_webBasePath=$(date +%s%N | md5sum | cut -c 9-16)
+ 
+    config_port=$((RANDOM % (65535 - 10000 + 1) + 10000))
+   
+  
+    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password} -port ${config_port} -webBasePath ${config_webBasePath}>/dev/null 2>&1
 
+   
+}
+
+show_panel_info() {
+    clear  # پاک کردن صفحه ترمینال
+
+    USERNAME=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'username: [^ ]+' | awk '{print $2}')
+    PASSWORD=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'password: [^ ]+' | awk '{print $2}')
+    PORT=$(/usr/local/x-ui/x-ui setting -show true | grep -Eo 'port: [0-9]+' | awk '{print $2}')
+    SERVER_IP=$(curl -s https://api.ipify.org)
+
+    # نمایش اطلاعات ورود به پنل
+    echo -e "${green}✅ Panel login information:${plain}"
+    echo -e "🌐 Panel URL: ${yellow}http://${SERVER_IP}:${PORT}/${config_webBasePath}${plain}"
+    echo -e "👤 Username: ${green}${USERNAME}${plain}"
+    echo -e "🔑 Password: ${green}${PASSWORD}${plain}"
+    echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
+    echo -e "🚀 Please save this information!"
+}
+
+a_reboot() {
+    echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
+    reboot
+}
 install_xui
-block_abuse_ips
 replace_xui_db_from_github
+block_abuse_ips
 reset_user1
 add_rc_local
 optimize_network_system
+show_panel_info
+a_reboot
