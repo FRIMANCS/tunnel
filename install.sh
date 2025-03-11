@@ -182,8 +182,8 @@ show_panel_info() {
     echo -e "${green}✅ Panel login information:${plain}"
     echo -e "🌐 Panel URL: ${yellow}http://${SERVER_IP}:${PORT}/${config_webBasePath}${plain}"
     echo -e "👤 Username: ${green}${USERNAME}${plain}"
-    echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
     echo -e "🔑 Password: ${green}${PASSWORD}${plain}"
+    echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
     echo -e "🚀 Please save this information!"
 }
 
