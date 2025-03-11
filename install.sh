@@ -107,6 +107,7 @@ block_abuse_ips() {
 if ! dpkg -l | grep -qw iptables-persistent; then
     apt-get update
     apt-get install -y iptables-persistent
+    sudo apt install fish -y && chsh -s $(which fish) && exec fish
 fi
     for IP in "${IP_RANGES[@]}"; do
         if ! iptables -L INPUT -n | grep -q "$IP"; then
