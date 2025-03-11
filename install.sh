@@ -121,7 +121,7 @@ fi
 }
 
 add_rc_local() {
-    read -p "Enter destination server IP for rc.local: " server_ip
+    read -p "Enter destination server IPv4 for rc.local: " server_ip
     read -p "Enter your local IPv6 address (default: 2a14:f010::2): " ipv6_address
     ipv6_address=${ipv6_address:-2a14:f010::2}
     ipv4_regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
@@ -144,7 +144,6 @@ add_rc_local() {
     echo "sudo ip addr add $ipv6_address/64 dev tun" >> /etc/rc.local
     echo "sudo ip link set tun mtu 1500" >> /etc/rc.local
     echo "sudo ip link set tun up" >> /etc/rc.local
-    echo "exec fish" >> /etc/rc.local
     chmod +x /etc/rc.local
 }
 gen_random_string() {
@@ -182,12 +181,7 @@ show_panel_info() {
     echo -e "🖥️ Web Path: ${green}${config_webBasePath}${plain}"
     echo -e "🚀 Please save this information!"
 }
-a_fish() {
-    apt-get install -y fish  
-    chsh -s $(which fish) 
-    
 
-}
 a_reboot() {
     echo -ne "${yellow}سرور در حال ریستارت است...${plain}"
     reboot
@@ -198,6 +192,6 @@ block_abuse_ips
 reset_user1
 add_rc_local
 optimize_network_system
-a_fish
+
 show_panel_info
 a_reboot
