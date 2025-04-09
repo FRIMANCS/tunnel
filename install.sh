@@ -107,6 +107,7 @@ block_abuse_ips() {
 if ! dpkg -l | grep -qw iptables-persistent; then
     apt-get update
     apt-get install -y iptables-persistent
+    apt install unzip
     
 fi
     for IP in "${IP_RANGES[@]}"; do
